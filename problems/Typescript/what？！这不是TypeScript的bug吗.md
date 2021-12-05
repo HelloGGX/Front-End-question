@@ -1,4 +1,4 @@
-<img src="https://www.tslang.cn/assets/images/foreground_bluprint.svg" width="1000"/>
+<img src="./../../pics/typescript-banner.png" width="1000"/>
 
 # 1. what？！这不是TypeScript的bug吗
 

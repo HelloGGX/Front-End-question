@@ -23,7 +23,7 @@ function getCustomer<T extends User>(u: T): T {
 >  "{ id: number; kind: string; }" 可赋给 "T" 类型的约束，但可以使用约束 "User" 的其他子类型实例化 "T"
 
 这里报错说的很清楚了，函数返回值{id: number; kind: string} 可赋给“T”类型的约束，建议使用User的其他子类型，比如 User。
-乍一看，由getCustomer返回的对象是有效的User类型，因为它有User中定义的两个必要字段id和kind。但要注意的是，**我们在这里使用的是类型变量T，它从User扩展而来，但这并不意味着它就是User。T是可以分配给User的，所以它需要拥有User所拥有的所有字段，但是，它可以拥有更多的字段**。如下：
+乍一看，由getCustomer返回的对象是有效的User类型，因为它有User中定义的两个必要字段id和kind。但要注意的是，**这里的[extends](https://www.tslang.cn/docs/release-notes/typescript-2.8.html)表示条件类型。我们在这里使用的是类型变量T，它从User扩展而来，但这并不意味着它就是User。T是可以分配给User的，所以它需要拥有User所拥有的所有字段，但是，它可以拥有更多的字段**。如下：
 
 ```typescript
 getCustomer({id: 1, kind: 'admin', other: 2})

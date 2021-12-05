@@ -5,6 +5,11 @@
 >
 > 6. **转载须知** ：以下所有文章皆为我（[HelloGGX](https://github.com/HelloGGX/Front-End-question/blob/master/README.md)）的原创。引用本项目文章请注明出处，发现恶意抄袭或搬运，会动用法律武器维护自己的权益。让我们一起维护一个良好的技术创作环境！
 
+<p align="center">
+<a href="#">
+	<img src="./pics/banner.png" width="700"/>
+</a>
+</p>
 
 <p align="center">
   <a href="https://t.zsxq.com/aybQRZN"><img src="https://img.shields.io/badge/%E7%9F%A5%E8%AF%86%E6%98%9F%E7%90%83-%E5%89%8D%E7%AB%AF%E5%93%B2%E5%AD%A6-orange" alt=""></a>

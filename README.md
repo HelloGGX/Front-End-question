@@ -7,7 +7,7 @@
 
 <p align="center">
 <a href="#">
-	<img src="./pics/banner.png" width="auto"/>
+	<img src="./pics/banner.png" width="800"/>
 </a>
 </p>
 

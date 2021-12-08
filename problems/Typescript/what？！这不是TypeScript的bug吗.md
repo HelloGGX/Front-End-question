@@ -1,4 +1,4 @@
-<img src="./../../pics/typescript-banner.png" width="1000"/>
+<img src="https://raw.githubusercontent.com/HelloGGX/Front-End-question/master/pics/typescript-banner.png"/>
 
 # 1. what？！这不是TypeScript的bug吗
 

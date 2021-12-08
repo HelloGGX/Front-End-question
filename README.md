@@ -25,7 +25,6 @@
      <a href="#planet"><img src="https://img.shields.io/badge/%E5%89%8D%E7%AB%AF-%E7%9F%A5%E8%AF%86%E6%98%9F%E7%90%83%E7%B2%BE%E9%80%89-orange" alt=""></a>
 </p>
 
-
 # 前端哲学
 
 ## 开启前端哲学社区的背景

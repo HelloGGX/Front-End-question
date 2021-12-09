@@ -8,7 +8,7 @@
 
 <p align="center">
 <a href="#">
-	<img src="https://raw.githubusercontent.com/HelloGGX/Front-End-question/master/pics/banner.png" width="800"/>
+  <img src="https://raw.githubusercontent.com/HelloGGX/Front-End-question/master/pics/banner.png" width="800"/>
 </a>
 </p>
 

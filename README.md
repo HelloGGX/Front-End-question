@@ -1,3 +1,23 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css" integrity="sha512-KUoB3bZ1XRBYj1QcH4BHCQjurAZnCO3WdrswyLDtp7BMwCw7dPZngSLqILf68SGgvnWHTD5pPaYrXi6wiRJ65g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+</style>
+
+<article class="markdown-body">
+
 > 1. **介绍**：本项目是个人提升技术博客，旨在传播前端干活技术文章[关注作者](#关于作者)
 。
 > 2. **学习社区** : 一起学习打卡/面试技巧/前端技术分享。欢迎加入[「前端哲学」知识星球](https://t.zsxq.com/aybQRZN) 。
@@ -91,3 +111,4 @@
 
 也欢迎与我交流，备注：「个人简单介绍」 + 交流，围观朋友圈，做点赞之交（备注没有自我介绍不通过哦）
 
+</article>

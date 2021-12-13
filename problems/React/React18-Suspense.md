@@ -19,7 +19,7 @@ function List({pageId}) {
 
 以上的两个问题给开发者造成了不必要的麻烦，仅仅是为了调整加载数据的视觉外观。针对以上两种问题，我的解决方案是：将 数据请求和指定loading状态进行关注点分离：
 
-<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/GIF 2021-12-9 22-49-14.gif"/>
+<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/GIF 2021-12-9 22-49-14.gif"  width="800"/>
 
 我们回到回到获取数据本身， useData只需要负责获取数据，不需要关心loadig:
 
@@ -78,13 +78,13 @@ function List({pageId}) {
 
 传统的客户端渲染中，页面需要等待JS加载完成才能渲染出来，如下图所示：
 
-<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/jsrender.png"/>
+<img width="800" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/jsrender.png"/>
 
 网站在首次加载JS的时候可能有较长的白屏时间， 用户体验不是很好。而服务端渲染直接从接口返回HTML, 用户不需要等待所有JS的加载完，最先看到的是静态的HTML，但是这时的HTML是不可交互的，我们需要javascript来实现交互， 那么下一步我们需要在客户端未该HTML片段注入javascript, 将交互逻辑连接到HTML上，这样的过程我们称之为： **Hydration**。
 
 >Hydration发生在整个应用程序都加载完成之后，一次性注入
 
-<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/hydrate.png"/>
+<img width="800" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/hydrate.png"/>
 
 服务端渲染的好处是在单页应用的情况下，很好的支持了SEO,并且加快了页面的显示（在javascript chunk 还在加载时就能渲染页面），但是也随之带来了一个弊端，比如： 一个服务端渲染的页面中，只有某个特定的组件加载数据很慢（要等带接口返回或者javascript包很大下载完成才能交互），其他模块加载都很快，这会导致要等待该模块加载出来，整个HTML才返回，从而拉低了整个应用程序的速度。这是因为服务端渲染返回的是HTML, 是一个要么都渲染出来，要么都不渲染出来的过程。 举个实际的例子：
 
@@ -100,7 +100,7 @@ function List({pageId}) {
 ```
 以上的代码在浏览器呈现的样子为：
 
-<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/temp.png"/>
+<img width="800" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/temp.png"/>
 
 在这个例子中，评论列表是应用程序的一部分，它涉及到昂贵的API请求和大量的javascript代码，因此可以肯定的说，在服务端渲染中评论模块会阻塞其他模块的展示。
 
@@ -118,6 +118,6 @@ function List({pageId}) {
   </RightPane> 
 </Layout>
 ```
-<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/tempLoading.gif"/>
+<img width="800" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/tempLoading.gif"/>
 
 在React18中，整个应用不用等待Comments组件加载，就可以完成Hydration, 也就意味着当Comments还在加载时，其他组件已经可以交互。

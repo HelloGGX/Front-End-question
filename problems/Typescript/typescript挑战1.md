@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/HelloGGX/Front-End-question/master/pics/typescript-banner.png"/>
+<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/typescript-banner.png"/>
 
 # 1. Typescript挑战-1 <img src="https://img.shields.io/badge/typescript-%E4%B8%AD%E7%BA%A7-blue"/>
 

@@ -1,4 +1,4 @@
-<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/banner.png"/>
+<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/typescript-banner.png"/>
 
 # 1. what？！这不是TypeScript的bug吗
 

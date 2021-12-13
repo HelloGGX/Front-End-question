@@ -1,7 +1,5 @@
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="theme/theme.css" />
-
-<article class="markdown-body">
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="theme/theme.css" /> -->
 
 > 1. **介绍**：本项目是个人提升技术博客，旨在传播前端干活技术文章[关注作者](#关于作者)
 。
@@ -95,5 +93,3 @@
 我始终坚信：每个人都是一束光，聚在一起才能创造令人惊叹的美丽。一群前端聚在一起也能创造一个世界，将用户体验做到极致 
 
 也欢迎与我交流，备注：「个人简单介绍」 + 交流，围观朋友圈，做点赞之交（备注没有自我介绍不通过哦）
-
-</article>

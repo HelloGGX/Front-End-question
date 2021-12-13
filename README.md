@@ -1,3 +1,5 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./theme/theme.css">
 
 > 1. **介绍**：本项目是个人提升技术博客，旨在传播前端干活技术文章[关注作者](#关于作者)
 。

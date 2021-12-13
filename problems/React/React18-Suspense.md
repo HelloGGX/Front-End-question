@@ -1,3 +1,4 @@
+
 # 深入React18的Suspense特性
 ## 1.1 Suspense在异步请求中的妙用
 说到react的异步请求我们通常会这样写异步请求代码：

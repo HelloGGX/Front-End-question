@@ -69,7 +69,7 @@ type KeysOfTrueValues<T extends Config> = {
 ```typescript
 Pick<User, KeysOfTrueValues<Config>>
 ```
-但是这里我们用的是泛型，User和 config属于两个不同的泛型条件，因此如果我们这样写的话就会出现报错：大致意思是KeysOfTrueValues<T> 不等于 keyof U,
+但是这里我们用的是泛型，User和 config属于两个不同的泛型条件，ts不认为这两种条件有关系，因此如果我们这样写的话就会出现报错：大致意思是KeysOfTrueValues<T> 不等于 keyof U,
 
 ```typescript
 Pick<U, KeysOfTrueValues<T>>

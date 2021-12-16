@@ -44,6 +44,7 @@
 ### Typescript精选
 1. [what？！这不是TypeScript的bug吗？](./problems/Typescript/what？！这不是TypeScript的bug吗.md) 
 2. [ Typescript挑战-1](./problems/Typescript/typescript挑战1.md) <span style="vertical-align: middle;"><img src="https://img.shields.io/badge/typescript-%E4%B8%AD%E7%BA%A7-blue"/></span>
+3. [ Typescript挑战-2](./problems/Typescript/typescript挑战1.md) <span style="vertical-align: middle;"><img src="https://img.shields.io/badge/typescript-%E4%B8%AD%E7%BA%A7-blue"/></span>
 
 <a id="NodeJS"></a>
 ### NodeJS

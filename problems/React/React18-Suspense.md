@@ -22,7 +22,7 @@ function List({pageId}) {
 
 <div align=center><img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/GIF 2021-12-9 22-49-14.gif"  width="800"/></div>
 
-我们回到回到获取数据本身， useData只需要负责获取数据，不需要关心loadig:
+我们回到获取数据本身， useData只需要负责获取数据，不需要关心loading:
 
 ```typescript
 function List({pageId}) {

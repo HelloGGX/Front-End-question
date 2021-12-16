@@ -26,7 +26,7 @@ type NaiveResult = NaiveFlat<[['a'], ['b', 'c'], ['d']]>
 那么在Typescript我们如何遍历数组呢，很遗憾是没有提供类似for循环的API的，那么我们如何取到数组中的每个元素呢？
 
 ### 第一种方案
-我们知道数组也是对象，元素的索引为键，元素为值。因此我们可以用对象的形式表达数组，如下表示：
+我们知道**数组也是对象**，元素的索引为键，元素为值。因此我们可以用对象的形式表达数组，如下表示：
 
 ```typescript
 type NaiveFlat<T extends any[]> = {
@@ -92,7 +92,7 @@ type NaiveFlat<T> = NaiveFlatHelper<T>[number] // 'a'| 'b' | 'c' | 'd'
 
 其实我们只需要动一个地方
 
-#### 针对方案一: T[k] => DeepFlat<T[K]>
+#### 针对方案一: T[k][number] => DeepFlat<T[K]>
 
 ```typescript
 type DeepFlat<T extends any[]> = {

@@ -74,7 +74,7 @@ Pick<User, KeysOfTrueValues<Config>>
 ```typescript
 Pick<U, KeysOfTrueValues<T>>
 ```
-因此这里我们需要判断一下：
+因此这里我们需要做条件类型判断：`KeysOfTrueValues<T> 可分配给 keyof U` 才可以用Pick
 
 ```typescript
 KeysOfTrueValues<T> extends keyof U? Pick<U, KeysOfTrueValues<T>>

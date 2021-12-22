@@ -21,7 +21,7 @@ type NaiveResult = NaiveFlat<[['a'], ['b', 'c'], ['d']]>
 
 1. 首先我们需要遍历数组
 2. 判断每个元素是否是数组
-3. 如果是数组就取出其中的元素，如果不是数组那么就直接返回
+3. 如果是数组就解构，如果不是数组那么就直接返回
 
 那么在Typescript我们如何遍历数组呢，很遗憾是没有提供类似for循环的API的，那么我们如何取到数组中的每个元素呢？
 
@@ -86,11 +86,9 @@ type NaiveFlat<T> = NaiveFlatHelper<T>[number] // 'a'| 'b' | 'c' | 'd'
 
 ## 扁平化最深的情况
 
-有了以上的扁平化一层的基础，那么想要扁平化最深，那就太好办了，给大家思考3分钟：
+有了以上的扁平化一层的基础，那么想要扁平化最深，那就太好办了，给大家思考3分钟：............
 
-<img width="800" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/image_processing20200225-18103-o71767.gif"/>
-
-其实我们只需要动一个地方
+其实我们只需要动一个地方，要想真正的深度遍历，我们需要把解构数组的地方转为递归调用
 
 #### 针对方案一: T[k][number] => DeepFlat<T[K]>
 
@@ -113,8 +111,24 @@ type TEST = DeepFlatHelper<Deep> // ['a', 'b', 'c', 'd', 'e']
 type DeepFlat<T> = DeepFlatHelper<T>[number] // 'a'| 'b' | 'c' | 'd' | 'e'
 ```
 
+# 关于作者
+
+大家好，我是程序员高翔的猫，MonkeyDesign用户体验部前端研发。
+
+**加我的微信，备注：「个人简单介绍」+「组队讨论前端」**， 拉你进群，每周两道前端讨论分析，题目是由浅入深的，把复杂的东西讲简单的，把枯燥的知识讲有趣的，实用的，深入的，系统的前端知识。
 
 
+<a name="微信"></a>
+<img width="400" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/weixin.jpg"/>
+
+# 我的公众号
+
+更多精彩文章持续更新，微信搜索：「高翔的猫」第一时间围观
+
+
+<a name="公众号"></a>
+
+<img src="https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=MzkxNjMxNDU0MQ==&mid=2247483692&idx=1&sn=2d2baccebfd92fbf6d0506d3c75b3ade&send_time=" data-img="1" width="200" height="200">
 
 
 

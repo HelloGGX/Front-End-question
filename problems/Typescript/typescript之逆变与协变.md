@@ -170,7 +170,7 @@ const expectWeightCats: getWeight<Cat> = weightAnimals;     // 类型安全
 但是反过来，函数expectWeightCats的形参属性很多，因此拿这些属性操作的可能性就有很多，而赋值的函数weightAnimals只需要其中一种操作：拿到其属性weight，函数expectWeightCats的形参属性完全覆盖，类型安全
 
 
-<img width="600" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/cotr.png"/>
+<img width="600" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/cotr.jpg"/>
 
 由上可以得出：**Cat是Animal的子类型，但是`getWeight<Cat>`却是`getWeight<Animal>`的父类型，表现为类型逆变**
 

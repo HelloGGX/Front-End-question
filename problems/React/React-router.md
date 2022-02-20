@@ -510,7 +510,6 @@ function matchRouteBranch<ParamKey extends string = string>(
 pathname: "/skills/ggx" //当前要匹配的路径
 matchedPathname："/" //目前已经匹配的路径
 remainingPathname: "/skills/ggx" //剩余要匹配的路径
-
 ```
 
 第二次匹配：
@@ -519,15 +518,14 @@ remainingPathname: "/skills/ggx" //剩余要匹配的路径
 pathname: "/skills/ggx" //当前要匹配的路径
 matchedPathname："/skills" //目前已经匹配的路径
 remainingPathname: "/ggx" //剩余要匹配的路径
-
 ```
 
 第三次匹配：
 
 ```js
 pathname: "/skills/ggx" //当前要匹配的路径
-remainingPathname: "/skills/ggx" //剩余要匹配的路径
 matchedPathname："" //目前已经匹配的路径
+remainingPathname: "/skills/ggx" //剩余要匹配的路径
 ```
 
 最后当所有的 routeMeta 都匹配成功，matchRouteBranch 会返回如下结构供`_renderMatches`函数渲染：

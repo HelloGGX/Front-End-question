@@ -451,7 +451,7 @@ matchedPathname："/" //目前已经匹配的路径
 remainingPathname: "/skills/ggx" //剩余要匹配的路径
 ```
 
-由以下关键代码可以看出，每一项 routeMeta 都会通过 matchPath 函数看看是否匹配到，其会根据 routeMeta 的 relativePath(即我们在 Route 中写的 path，如 path = 'skills'，path='ggx'；)，生成对应的正则匹配，只有所有 routeMeta 都匹配上了，才正在渲染页面，只要中途有一个匹配不上，就会直接跳出 for 循环，中断后面的渲染。（matchPath 函数涉及的正则算法不必深究）
+由以下关键代码可以看出，每一项 routeMeta 都会通过 matchPath 函数看看是否匹配到，其会根据 routeMeta 的 relativePath(即我们在 Route 中写的 path，如 path = 'skills'，path='ggx'；)，生成对应的正则匹配，只有所有 routeMeta 都匹配上了，才真正渲染页面，只要中途有一个匹配不上，就会直接跳出 for 循环，中断后面的渲染。（matchPath 函数涉及的正则算法不必深究）
 
 > caseSensitive(即根据 relativePath 生成的正则是否忽略大小写)
 > end(是否是最后一项 routeMeta，最后一项表示是该 route 自己的路由信息，同时也意味着匹配到最后了)

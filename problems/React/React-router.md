@@ -87,10 +87,12 @@ function addClicker(link) {
 
 弄清楚 Router 原理之前，用一幅图表示 History ，React-Router ， React-Router-Dom 三者的关系。
 
+下面是React-Router-dom V5版本的关系图, 与V6相比，除了一些API有变动之外，其他的一致：
+
 <img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/react-router1.jpg"/>
 
 - **history**： history 是整个 React-router 的核心，里面包括两种路由模式下改变路由的方法，和监听路由变化方法等。
-- **react-router**：既然有了 history 路由监听/改变的核心，那么需要调度组件负责派发这些路由的更新，也需要容器组件通过路由更新，来渲染视图。所以说 React-router 在 history 核心基础上，增加了 Router ，Switch ，Route 等组件来处理视图渲染。
+- **react-router**：既然有了 history 路由监听/改变的核心，那么需要调度组件负责派发这些路由的更新，也需要容器组件通过路由更新，来渲染视图。所以说 React-router 在 history 核心基础上，增加了 Router ，Routes ，Route 等组件来处理视图渲染。
 - **react-router-dom**：  在 react-router 基础上，增加了一些 UI 层面的拓展比如 Link ，NavLink 。以及两种模式的根部路由 BrowserRouter ，HashRouter 。
 
 ### 两种路由主要方式

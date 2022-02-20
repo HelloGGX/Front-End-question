@@ -439,7 +439,7 @@ export function matchRoutes(
 
 <img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/react-router3.png"/>
 
-最后将每个 branch 和 pathname 传入 matchRouteBranch: `matches = matchRouteBranch(branches[i], pathname);` , 判断 branches 中是否有与 pathname 匹配的项，把匹配的都返回，与筛选数组类似。而 matchRouteBranch 会遍历每个 branch 的 routesMeta。以上面的 demo 为例子，每个 branch 下的 routeMeta 如下图所示：
+**最后将每个 branch 和 pathname 传入 matchRouteBranch: `matches = matchRouteBranch(branches[i], pathname);` , 判断 branches 中是否有与 pathname 匹配的项，把匹配的都返回，与筛选数组类似。**而 matchRouteBranch 会遍历每个 branch 的 routesMeta。以上面的 demo 为例子，每个 branch 下的 routeMeta 如下图所示：
 
 <img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/react-router4.png"/>
 

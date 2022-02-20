@@ -655,7 +655,7 @@ export function useOutlet(context?: unknown): React.ReactElement | null {
 }
 ```
 
-从上面的 if 判断可以看出，只要父级路由有  <Outlet />  就能拿到最近一层 RouteContext 的  outlet  了，由于是层层嵌套的 value，所以就能拿到最近一层之后的所有子路由的内容，所以我们常常在嵌套路由的 parent route 的 element 写上一个<Outlet />，相当于插槽的作用，因此我们常常这样写：
+从上面的 if 判断可以看出，只要父级路由有  <Outlet />  就能拿到最近一层 RouteContext 的  outlet  了，所以我们常常在嵌套路由的 parent route 的 element 写上一个<Outlet />，相当于插槽的作用，因此我们常常这样写：
 
 ```jsx
 <div>

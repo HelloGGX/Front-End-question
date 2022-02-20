@@ -57,7 +57,7 @@ function trapClickOnNonInteractiveElement(node) {
 由以上现象我们验证了 React 的事件绑定方式：
 
 <span style="background-color: #fff199;color: black">
-所有可监听的原生事件均绑定到了root节点上并由对应的监听器处理。在JavaScript中，页面中事件处理程序的数量与页面整体性能直接相关。原因有很
+所有可监听的原生事件均绑定到了root节点上并由对应的监听器代理。在JavaScript中，页面中事件处理程序的数量与页面整体性能直接相关。原因有很
 多。首先，每个函数都是对象，都占用内存空间，对象越多，性能越差，因此统一绑定到root节点进行事件委托，节约内存，提升页面性能</span>
 
 结论：

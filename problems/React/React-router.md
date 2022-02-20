@@ -87,7 +87,7 @@ function addClicker(link) {
 
 弄清楚 Router 原理之前，用一幅图表示 History ，React-Router ， React-Router-Dom 三者的关系。
 
-下面是React-Router-dom V5版本的关系图, 与V6相比，除了一些API有变动之外，其他的一致：
+下面是 React-Router-dom V5 版本的关系图, 与 V6 相比，除了一些 API 有变动之外，其他的一致：
 
 <img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/react-router1.jpg"/>
 
@@ -287,7 +287,7 @@ function push(to, state) {
 
 > 调用 history.pushState()或 history.replaceState()不会触发 popstate 事件。只有在做出浏览器动作时，才会触发该事件，如用户点击浏览器的回退按钮
 
-当我们调用 history.push 方法时, 其实执行了 window.history.pushState(historyState, '', url),改变 url,（window.location改变会触发 listen 方法订阅更新），紧接着执行方法`applyTx(nextAction);` ，遍历每个订阅函数，触发 setState, 然后通过 setState 来改变 context 中的 value, 触发组件更新，所以改变路由，本质上是 location 改变带来的更新作用。
+当我们调用 history.push 方法时, 其实执行了 window.history.pushState(historyState, '', url),改变 url,（window.location 改变会触发 listen 方法订阅更新），紧接着执行方法`applyTx(nextAction);` ，遍历每个订阅函数，触发 setState, 然后通过 setState 来改变 context 中的 value, 触发组件更新，所以改变路由，本质上是 location 改变带来的更新作用。
 
 ```js
 function applyTx(nextAction) {
@@ -443,7 +443,7 @@ export function matchRoutes(
 
 <img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/react-router4.png"/>
 
-例如：当切换到路由 http://localhost:3000/skills/ggx 时, matchRouteBranch 会遍历数组 routesMeta,此时有几个关键变量要了解：
+例如：当切换到路由 http://localhost:3000/skills/ggx ,此时有几个关键变量要了解：
 
 ```js
 pathname: "/skills/ggx" //当前要匹配的路径
@@ -451,25 +451,55 @@ matchedPathname："/" //目前已经匹配的路径
 remainingPathname: "/skills/ggx" //剩余要匹配的路径
 ```
 
-由以下关键代码可以看出，每一项 routeMeta 都会通过 matchPath 函数看看是否匹配到，其会根据 routeMeta 的 relativePath(即我们在 Route 中写的 path，如 path = 'skills'，path='ggx'；)，生成对应的正则匹配，只有所有 routeMeta 都匹配上了，才真正渲染页面，只要中途有一个匹配不上，就会直接跳出 for 循环，中断后面的渲染。（matchPath 函数涉及的正则算法不必深究）
+由以下关键代码可以看出， matchRouteBranch 会遍历数组 routesMeta，每一项 routeMeta 都会通过 matchPath 函数看看是否匹配到，其会根据 routeMeta 的 relativePath(即我们在 Route 中写的 path，如 path = 'skills'，path='ggx'；)，生成对应的正则匹配，只有所有 routeMeta 都匹配上了，才真正渲染页面，只要中途有一个匹配不上，就会直接跳出 for 循环，中断后面的渲染。（matchPath 函数涉及的正则算法不必深究）
 
 > caseSensitive(即根据 relativePath 生成的正则是否忽略大小写)
 > end(是否是最后一项 routeMeta，最后一项表示是该 route 自己的路由信息，同时也意味着匹配到最后了)
 
 ```js
-// 剩余要匹配的路径, 用slice方法，总路径除去已经匹配到的，就是还剩的路径
-let remainingPathname =
-  matchedPathname === "/"
-    ? pathname
-    : pathname.slice(matchedPathname.length) || "/";
-let match = matchPath(
-  { path: meta.relativePath, caseSensitive: meta.caseSensitive, end },
-  remainingPathname
-);
+function matchRouteBranch<ParamKey extends string = string>(
+  branch: RouteBranch,
+  pathname: string
+): RouteMatch<ParamKey>[] | null {
+  let { routesMeta } = branch;
 
-if (!match) return null;
-// 之前已经匹配到的路径+当前匹配成功的relativePath => 已经匹配完的路径
-joinPaths([matchedPathname, match.pathname]);
+  let matchedParams = {};
+  let matchedPathname = "/";
+  let matches: RouteMatch[] = [];
+  for (let i = 0; i < routesMeta.length; ++i) {
+    let meta = routesMeta[i];
+    let end = i === routesMeta.length - 1;
+    // 剩余要匹配的路径, 用slice方法，总路径除去已经匹配到的，就是还剩的路径
+    let remainingPathname =
+      matchedPathname === "/"
+        ? pathname
+        : pathname.slice(matchedPathname.length) || "/";
+    let match = matchPath(
+      { path: meta.relativePath, caseSensitive: meta.caseSensitive, end },
+      remainingPathname
+    );
+
+    if (!match) return null;
+
+    Object.assign(matchedParams, match.params);
+
+    let route = meta.route;
+
+    matches.push({
+      params: matchedParams,
+      // 之前已经匹配到的路径+当前匹配成功的relativePath => 已经匹配完的路径
+      pathname: joinPaths([matchedPathname, match.pathname]),
+      pathnameBase: joinPaths([matchedPathname, match.pathnameBase]),
+      route
+    });
+
+    if (match.pathnameBase !== "/") {
+      matchedPathname = joinPaths([matchedPathname, match.pathnameBase]);
+    }
+  }
+
+  return matches;
+}
 ```
 
 例如：路由 http://localhost:3000/skills/ggx 的匹配的顺序为：
@@ -565,13 +595,14 @@ function _renderMatches(
           ),
         }}
       >
-        /** 由于路由/skills没有组件渲染，它的element: undefined，所以渲染 <Outlet /> **/
+        /** 由于路由/skills没有组件渲染，它的element: undefined，所以渲染{" "}
+        <Outlet /> **/
         {<Outlet />}         
       </RouteContext.Provider>
     ),
   }}
 >
-    {<Layout /> || <Outlet />}
+  {<Layout /> || <Outlet />}
 </RouteContext.Provider>
 ```
 
@@ -601,6 +632,7 @@ export function useParams<
 }
 
 ```
+
 因此方便了开发者从父路由拿到当前展示的深层级子路由的信息。
 
 ### 额外提一嘴：Outlet
@@ -629,22 +661,21 @@ export function useOutlet(context?: unknown): React.ReactElement | null {
 ```jsx
 <div>
   <nav>
-    <ul>       
+    <ul>
+             
       <li>
           <Link to="/">Home</Link>       
       </li>
       <li>
           <Link to="/about">About</Link>       
-      </li>       
-      <li>
+      </li>       <li>
            <Link to="/dashboard">Dashboard</Link>       
-      </li>         
-      <li>      
-        <Link to="/skills">
+      </li>         <li>
+        {" "}
+             <Link to="/skills">
             <Link to="/skills/ggx">ggx</Link>         
         </Link>      
-      </li>    
-      <li>
+      </li>    <li>
            <Link to="/user">User</Link>       
       </li>
     </ul>

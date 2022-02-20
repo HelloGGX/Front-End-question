@@ -140,7 +140,7 @@ function Index() {
 
 ## React-Router 基本构成
 
-下面分别是 BrowserRouter 和 HashRouter 组件的简化版源码：
+下面分别是 BrowserRouter 和 HashRouter 组件的源码：
 
 ```jsx
 import { createBrowserHistory, createHashHistory } from "history";

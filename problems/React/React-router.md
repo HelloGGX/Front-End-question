@@ -146,30 +146,60 @@ function Index() {
 import { createBrowserHistory, createHashHistory } from "history";
 
 /***BrowserRouter组件***/
-export function BrowserRouter({  basename,  children,  window}: BrowserRouterProps) {
-  let historyRef = React.useRef<BrowserHistory>();
-  if (historyRef.current == null) {
-  // 创建history 对象
-    historyRef.current = createBrowserHistory({ window });
-  }
-  return (
-    <Router  basename={basename} children={children} navigator={history}.../>
-  );
+export function BrowserRouter({
+  basename,
+  children,
+  window
+}: BrowserRouterProps) {
+  let historyRef = React.useRef<BrowserHistory>();
+  if (historyRef.current == null) {
+    historyRef.current = createBrowserHistory({ window });
+  }
+
+  let history = historyRef.current;
+  let [state, setState] = React.useState({
+    action: history.action,
+    location: history.location
+  });
+
+  React.useLayoutEffect(() => history.listen(setState), [history]);
+
+  return (
+    <Router
+      basename={basename}
+      children={children}
+      location={state.location}
+      navigationType={state.action}
+      navigator={history}
+    />
+  );
 }
 
 /***HashRouter组件***/
 export function HashRouter({ basename, children, window }: HashRouterProps) {
-  let historyRef = React.useRef<HashHistory>();
-  if (historyRef.current == null) {
-   // 创建history 对象
-    historyRef.current = createHashHistory({ window });
-  }
-  return (
-    <Router  basename={basename}  children={children} navigator={history} ... />
-  );
+  let historyRef = React.useRef<HashHistory>();
+  if (historyRef.current == null) {
+    historyRef.current = createHashHistory({ window });
+  }
+
+  let history = historyRef.current;
+  let [state, setState] = React.useState({
+    action: history.action,
+    location: history.location
+  });
+
+  React.useLayoutEffect(() => history.listen(setState), [history]);
+
+  return (
+    <Router
+      basename={basename}
+      children={children}
+      location={state.location}
+      navigationType={state.action}
+      navigator={history}
+    />
+  );
 }
-
-
 ```
 
 我们可以看到以上两个组件其实就是根据 history 提供的 createBrowserHistory 或者 createHashHistory 创建出不同的 history 对象，传入到 Router 组件中，而这些 history 对象分别包含了 history 和 hash 模式下用到的方法和变量，比如：push、go、replace、back、listen 等。

@@ -287,7 +287,7 @@ function push(to, state) {
 
 > 调用 history.pushState()或 history.replaceState()不会触发 popstate 事件。只有在做出浏览器动作时，才会触发该事件，如用户点击浏览器的回退按钮
 
-当我们调用 history.push 方法时, 其实执行了 window.history.pushState(historyState, '', url),改变 url,（会触发 listen 方法订阅更新），紧接着执行方法`applyTx(nextAction);` ，遍历每个订阅函数，触发 setState, 然后通过 setState 来改变 context 中的 value, 触发组件更新，所以改变路由，本质上是 location 改变带来的更新作用。
+当我们调用 history.push 方法时, 其实执行了 window.history.pushState(historyState, '', url),改变 url,（window.location改变会触发 listen 方法订阅更新），紧接着执行方法`applyTx(nextAction);` ，遍历每个订阅函数，触发 setState, 然后通过 setState 来改变 context 中的 value, 触发组件更新，所以改变路由，本质上是 location 改变带来的更新作用。
 
 ```js
 function applyTx(nextAction) {

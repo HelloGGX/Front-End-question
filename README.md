@@ -42,10 +42,10 @@
 
 <a id="typescript"></a>
 ### Typescript精选
-1. [what？！这不是TypeScript的bug吗？](./problems/Typescript/what？！这不是TypeScript的bug吗.md) 
+1. [what？！这不是TypeScript的bug吗？](https://mp.weixin.qq.com/s?__biz=MzkxNjMxNDU0MQ==&mid=2247483692&idx=1&sn=2d2baccebfd92fbf6d0506d3c75b3ade&chksm=c15081eef62708f83af359bddce04850bddd356d3af2a7e2be6774ab721eb1bd012d44efb7e5#rd) 
 2. [ Typescript挑战-1](./problems/Typescript/typescript挑战1.md) <span style="vertical-align: middle;"><img src="https://img.shields.io/badge/typescript-%E4%B8%AD%E7%BA%A7-blue"/></span>
 3. [ Typescript挑战-2](./problems/Typescript/typescript挑战2.md) <span style="vertical-align: middle;"><img src="https://img.shields.io/badge/typescript-%E4%B8%AD%E7%BA%A7-blue"/></span>
-4. [ Typescript之协变和逆变](./problems/Typescript/typescript之逆变与协变.md) <span style="vertical-align: middle;"><img src="https://img.shields.io/badge/typescript-%E4%B8%AD%E7%BA%A7-blue"/></span>
+4. [ Typescript之协变和逆变](https://mp.weixin.qq.com/s?__biz=MzkxNjMxNDU0MQ==&mid=2247483893&idx=1&sn=351625caed67936aede642ee0aff48b0&chksm=c1508137f6270821a50565eb2923b4270868fe90980daf02fe0d7c98f3f53336b1f44cd731c1#rd) <span style="vertical-align: middle;"><img src="https://img.shields.io/badge/typescript-%E4%B8%AD%E7%BA%A7-blue"/></span>
 
 <a id="NodeJS"></a>
 ### NodeJS
@@ -53,9 +53,9 @@
 
 <a id="React"></a>
 ### React
-1. [深入React18的Suspense特性](./problems/React/React18-Suspense.md) 
-2. [深入React17的事件系统](./problems/React/React-event.md) 
-3. [深入React-Router原理](./problems/React/React-router.md) 
+1. [深入React18的Suspense特性](https://mp.weixin.qq.com/s?__biz=MzkxNjMxNDU0MQ==&mid=2247483677&idx=1&sn=dbec1e7bf371843b7f3bf3c380812786&chksm=c15081dff62708c9f8d25eeffbb01a2ff807de311f3cf22d116c1a8d74640f743565ea56ffc9#rd) 
+2. [深入React17的事件系统](https://mp.weixin.qq.com/s?__biz=MzkxNjMxNDU0MQ==&mid=2247484322&idx=1&sn=7502f89d9e3e7b9b81d2e17fa68540a2&chksm=c1508360f6270a76b72d753295b9920b7fb5417e0f604e27e5abebf8c1cc45979c33fc5ee4fc#rd) 
+3. [深入React-Router原理](https://mp.weixin.qq.com/s?__biz=MzkxNjMxNDU0MQ==&mid=2247484399&idx=1&sn=0b1d37ef23636b92aa30611be04f3d97&chksm=c150832df6270a3b65f05cfd26c02aa56e1b576d8a6328244bcf1db435830bf652086c68cd44#rd) 
 
 <a id="Vue"></a>
 ### Vue
@@ -68,7 +68,7 @@
 
 <a id="JS"></a>
 ### JS语言精髓
-（持续更新中....）
+1. [​对事件循环与浏览器渲染时机的探讨](https://mp.weixin.qq.com/s?__biz=MzkxNjMxNDU0MQ==&mid=2247484420&idx=1&sn=671fa034fc6d0c7656154c7f76afdace&chksm=c15084c6f6270dd0f76966c4b98cc17b6a8082e566d21fd8e1bbf6c2e350f6e866c89680b7dd#rd) 
 
 <a id="V8"></a>
 ### 深入V8

@@ -594,8 +594,7 @@ function _renderMatches(
           ),
         }}
       >
-        /** 由于路由/skills没有组件渲染，它的element: undefined，所以渲染{" "}
-        <Outlet /> **/
+        /**由于路由/skills没有组件渲染，所以渲染 Outlet**/
         {<Outlet />}         
       </RouteContext.Provider>
     ),

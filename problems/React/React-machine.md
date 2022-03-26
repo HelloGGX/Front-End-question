@@ -247,7 +247,7 @@ XState 的 API 就不一一赘述，[官网更详细](https://xstate.js.org/docs
 这里为了更好的理解逻辑关系，我们用了流程图，在实际项目中，我们可能会用到**业务流程时序图**
 下面是 switch 组件内部的流程时序图：
 
-<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/react-machine6.png"/>
+<img width="600" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/react-machine6.png"/>
 
 #### 第二步：
 
@@ -429,3 +429,22 @@ service.subscribe((state) => {});
 ```
 
 xstate 也会实时为我们生成时序图。
+
+---
+
+# 关于作者
+
+大家好，我是程序员高翔的猫，MonkeyDesign 用户体验部前端研发。
+
+**加我的微信，备注：「个人简单介绍」+「组队讨论前端」**， 拉你进群，每周两道前端讨论分析，题目是由浅入深的，把复杂的东西讲简单的，把枯燥的知识讲有趣的，实用的，深入的，系统的前端知识。
+
+<a name="微信"></a>
+<img width="400" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/weixin.jpg"/>
+
+# 我的公众号
+
+更多精彩文章持续更新，微信搜索：「高翔的猫」第一时间围观
+
+<a name="公众号"></a>
+
+<img src="https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=MzkxNjMxNDU0MQ==&mid=2247483692&idx=1&sn=2d2baccebfd92fbf6d0506d3c75b3ade&send_time=" data-img="1" width="200" height="200">

@@ -4,7 +4,7 @@
 
 为了更好的理解 React 事件机制，我们需要回答下面三个问题:
 
-1. React为什么有自己的事件系统？
+1. React 为什么有自己的事件系统？
 2. 什么是事件合成？
 3. 事件系统如何模拟冒泡和捕获阶段？
 
@@ -52,7 +52,7 @@ function trapClickOnNonInteractiveElement(node) {
 
 > 绑定空函数的原因是 React 为了解决 iPhone Safari 上，事件委托不适用于 click 事件的问题。 造成 Iphone 这样的问题的原因可能是：用户在 iphone 这样的触控设备上随机点击页面元素， 并通过捕获、目标、冒泡阶段传播点击事件的性能开销可能会很大,于是 iphone 工程师关闭了这样的功能。
 
-从上图可以看出，在`#app`的容器位置的click事件分别绑定了两个事件处理函数，他们分别处理捕获事件和冒泡事件，通过事件处理函数**dispathDiscreteEvent触发**。
+从上图可以看出，在`#app`的容器位置的 click 事件分别绑定了两个事件处理函数，他们分别处理捕获事件和冒泡事件，通过事件处理函数**dispathDiscreteEvent 触发**。
 
 由以上现象我们验证了 React 的事件绑定方式：
 
@@ -62,8 +62,8 @@ function trapClickOnNonInteractiveElement(node) {
 
 结论：
 
-1. 所有可监听的原生事件均绑定到了root节点上并由对应的监听器处理。
-2. 统一绑定到root节点进行事件委托，节约内存，提升页面性能
+1. 所有可监听的原生事件均绑定到了 root 节点上并由对应的监听器处理。
+2. 统一绑定到 root 节点进行事件委托，节约内存，提升页面性能
 3. 绑定空函数的原因是 React 为了解决 iPhone Safari 上，事件委托不适用于 click 事件的问题
 4. react 实现自己的事件系统抹平了浏览器之间的差异，简化了事件逻辑
 
@@ -216,7 +216,9 @@ function createEventListenerWrapperWithPriority(
 ```
 
 ### 3.4 addEventCaptureListener/addEventBubbleListener
-这里真正调用了原生的addEventListener方法
+
+这里真正调用了原生的 addEventListener 方法
+
 ```typescript
 // 调用原生的监听函数addEventListener
 function addEventBubbleListener(target, eventType, listener) {
@@ -241,9 +243,9 @@ function addEventCaptureListener(target, eventType, listener) {
 
 1. 初始化跟组件时，react 会为所有可以监听的原生事件上添加监听器
 2. React 会根据不同的优先级提供不同的监听器分别是：
-    - 离散事件（DiscreteEvent）：click、keydown、focusin 等，这些事件的触发不是连续的，优先级为 0。
-    - 用户阻塞事件（UserBlockingEvent）：drag、scroll、mouseover 等，特点是连续触发，阻塞渲染，优先级为 1。
-    - 连续事件（ContinuousEvent）：canplay、error、audio 标签的 timeupdate 和 canplay，优先级最高，为 2。
+   - 离散事件（DiscreteEvent）：click、keydown、focusin 等，这些事件的触发不是连续的，优先级为 0。
+   - 用户阻塞事件（UserBlockingEvent）：drag、scroll、mouseover 等，特点是连续触发，阻塞渲染，优先级为 1。
+   - 连续事件（ContinuousEvent）：canplay、error、audio 标签的 timeupdate 和 canplay，优先级最高，为 2。
 3. React 将事件划分优先级的目的是决定调度任务的轻重缓急，提供更好的用户体验。
 
 # 4. 触发事件流程
@@ -546,14 +548,21 @@ function createDispatchListener(instance, listener, currentTarget) {
 但当我们的在 button 和 parent 节点上分别绑定 onClickCapture 捕获事件，如下：
 
 ```html
-<div className="parent" onClick={handleBubbleParentClick} onClickCapture={handleCaptureParentClick}>
-  <button onClick={handleBubbleBtnClick} onClickCapture={handleCaptureBtnClick}>
+<div
+  className="parent"
+  onClick="{handleBubbleParentClick}"
+  onClickCapture="{handleCaptureParentClick}"
+>
+  <button
+    onClick="{handleBubbleBtnClick}"
+    onClickCapture="{handleCaptureBtnClick}"
+  >
       按钮
   </button>
 </div>
 ```
 
-点击按钮打印listeners,我们会发现无论事件是在冒泡阶段执行，还是捕获阶段执行，都以同样的顺序 push 到 dispatchQueue 的 listeners 中。
+点击按钮打印 listeners,我们会发现无论事件是在冒泡阶段执行，还是捕获阶段执行，都以同样的顺序 push 到 dispatchQueue 的 listeners 中。
 
 思考一下： 那 react 是如何模拟冒泡和捕获这两种不同的执行顺序呢？
 
@@ -677,6 +686,7 @@ function App() {
   );
 }
 ```
+
 点击按钮打印如下:
 
 <img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/react_event8.png"/>
@@ -685,31 +695,29 @@ function App() {
 捕获阶段=> 事件源阶段 => 冒泡阶段
 
 点击按钮时：
-1. 从root节点开始就已经触发了负责捕获事件的dispatchDiscreteEvent监听代理：从事件源节点到root节点收集onClickCapture事件，最后**倒序**执行。（打印捕获回调）
-2. 事件捕获阶段从root到事件源的过程中，如果遇到绑定的**原生捕获事件**，执行原生事件回调，一直到事件源阶段。
-3. 从事件源到root节点的冒泡阶段，途中如果遇到绑定的**原生冒泡事件**，正常执行浏览器的原生行为。（打印原生事件回调）
-4. 当事件冒泡到root节点，触发绑定在root上负责冒泡的dispatchDiscreteEvent监听代理：从事件源节点到root节点沿途收集onClick事件，最后**顺序**执行（打印冒泡事件回调）
 
-因此我们可以发现，原生的禁止冒泡方法是可以阻止触发root节点的冒泡监听，但反过来，react的isPropagationStopped api只能阻止react事件的执行，不能阻止原生方法的冒泡执行，因为react并不能识别原生事件的绑定，不会进行事件的注册，更别提收集和执行了。
+1. 从 root 节点开始就已经触发了负责捕获事件的 dispatchDiscreteEvent 监听代理：从事件源节点到 root 节点收集 onClickCapture 事件，最后**倒序**执行。（打印捕获回调）
+2. 事件捕获阶段从 root 到事件源的过程中，如果遇到绑定的**原生捕获事件**，执行原生事件回调，一直到事件源阶段。
+3. 从事件源到 root 节点的冒泡阶段，途中如果遇到绑定的**原生冒泡事件**，正常执行浏览器的原生行为。（打印原生事件回调）
+4. 当事件冒泡到 root 节点，触发绑定在 root 上负责冒泡的 dispatchDiscreteEvent 监听代理：从事件源节点到 root 节点沿途收集 onClick 事件，最后**顺序**执行（打印冒泡事件回调）
+
+因此我们可以发现，原生的禁止冒泡方法是可以阻止触发 root 节点的冒泡监听，但反过来，react 的 isPropagationStopped api 只能阻止 react 事件的执行，不能阻止原生方法的冒泡执行，因为 react 并不能识别原生事件的绑定，不会进行事件的注册，更别提收集和执行了。
 
 总结：
 
-1. React针对不同的事件，调用不同的插件处理事件收集
-2. React收集事件的方式是从事件源开始向上遍历，直到root节点为止，沿途收集Fiber点的Props属性中与事件源类型相同的回调
-3. createSyntheticEvent函数根据传入的不同事件接口，实现了浏览器的3级DOM事件API，规避了浏览器的一些兼容性问题，并返回合成事件对象
-4. React遍历事件队列dispatchQueue数组，并遍历其中的listeners，捕获阶段，倒序遍历执行回调，冒泡阶段，正序遍历执行回调合成事件和原生事件存在的情况下，执行顺序为 捕获合成事件->原生事件->冒泡合成事件
-5. 原生的禁止冒泡方法可以阻止react冒泡，react的isPropagationStopped无法阻止原生事件
+1. React 针对不同的事件，调用不同的插件处理事件收集
+2. React 收集事件的方式是从事件源开始向上遍历，直到 root 节点为止，沿途收集 Fiber 点的 Props 属性中与事件源类型相同的回调
+3. createSyntheticEvent 函数根据传入的不同事件接口，实现了浏览器的 3 级 DOM 事件 API，规避了浏览器的一些兼容性问题，并返回合成事件对象
+4. React 遍历事件队列 dispatchQueue 数组，并遍历其中的 listeners，捕获阶段，倒序遍历执行回调，冒泡阶段，正序遍历执行回调合成事件和原生事件存在的情况下，执行顺序为 捕获合成事件->原生事件->冒泡合成事件
+5. 原生的禁止冒泡方法可以阻止 react 冒泡，react 的 isPropagationStopped 无法阻止原生事件
 
-
-
-***
+---
 
 # 关于作者
 
-大家好，我是程序员高翔的猫，MonkeyDesign用户体验部前端研发。
+大家好，我是程序员高翔的猫，MonkeyDesign 用户体验部前端研发。
 
 **加我的微信，备注：「个人简单介绍」+「组队讨论前端」**， 拉你进群，每周两道前端讨论分析，题目是由浅入深的，把复杂的东西讲简单的，把枯燥的知识讲有趣的，实用的，深入的，系统的前端知识。
-
 
 <a name="微信"></a>
 <img width="400" src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/weixin.jpg"/>
@@ -717,7 +725,6 @@ function App() {
 # 我的公众号
 
 更多精彩文章持续更新，微信搜索：「高翔的猫」第一时间围观
-
 
 <a name="公众号"></a>
 

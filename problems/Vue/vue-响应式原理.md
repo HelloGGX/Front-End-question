@@ -331,6 +331,7 @@ obj.skill = "vue";
 ```
 
 原因分析：activeEffect 只有一个，当执行内层的 effect 函数时，activeEffect 指向内层的 effectFn
+
 解决思路：使用一个栈，存储每个 effectFn, 当副作用函数执行完毕就抛出，把内部的 effectFn 置为 activeEffect
 
 ```js
@@ -350,8 +351,6 @@ function effect(fn) {
   effectFn();
 }
 ```
-
-我们使用 effectStack 作为一个栈来存储副作用函数，当前副作用函数执行完毕后，将当前副作用函数弹出，并把 activeEffect 还原为之前的值。
 
 ## 需要解决的问题 3：
 
@@ -586,7 +585,7 @@ function computed(callback) {
 }
 ```
 
-## 解决计算属性无法侦听改变的问题
+## 解决计算属性无法拿到改变后的值的问题
 
 ```js
 const result = computed(() => {
@@ -599,6 +598,7 @@ console.log(result.value); //ggx20
 ```
 
 当我们访问了计算属性的值，打印出来为："ggx20"，更改 obj.age 的值，当再次访问计算属性的值的时候，发现打印出来依然为："ggx20"。预期结果为："ggx21"
+
 问题分析：当第一次访问 result.value 的值之后，变量 dirty 会设置为 false, 代表不需要计算。即使我们修改了 obj.age, 但只要 dirty 的值为 false, 就不会重新计算，所以导致我们得到了错误的值。
 
 解决方案：当值发生变化时，只要把 dirty 的值重置为 true 就可以了，因为 trigger 的触发，会导致 scheduler 的重新执行，我们可以利用这个时机，去把 dirty 设置为 true.
@@ -626,7 +626,7 @@ function computed(callback) {
 }
 ```
 
-## 解决计算属性在 effect 中的问题
+## 解决计算属性嵌套在 effect 中的问题
 
 接着上面的代码:
 

@@ -66,6 +66,7 @@
 ### Vue
 
 1. [vue3 的响应式原理与实现](./problems/Vue/vue-响应式原理.md)
+2. [vue3 对象的代理细节](./problems/Vue/vue-对象的代理细节.md)
 
 <a id="CSS"></a>
 

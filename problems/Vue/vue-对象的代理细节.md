@@ -115,7 +115,7 @@ Return ? OrdinaryDefineOwnProperty(O, P, Desc).
 
 VUE3 的代理方式是通过 Proxy 去拦截对应的操作，并返回一个代理对象
 
-<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/vue-对象的代理细节1.png2"/>
+<img src="https://cdn.jsdelivr.net/gh/HelloGGX/Front-End-question@master/pics/vue-对象的代理细节2.png"/>
 
 例如以上代码，当我们访问 proxyObj 的属性时，引擎会调用部署在代理对象上的内部方法[[Get]], 而这个内部方法会调用对应的处理函数，也就是我们目前定义的 get 处理函数，但是当我们没有写 get 处理函数时，这个代理对象的内部方法[[Get]]会调用目标对象的内部方法[[Get]]来获取属性值。
 

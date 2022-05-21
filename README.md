@@ -79,8 +79,8 @@
 ### JS 语言精髓
 
 1. [​ 对事件循环与浏览器渲染时机的探讨](./problems/JS/event-loop.md)
-
-<a id="V8"></a>
+2. [​ 为什么不能在 super 之前使用 this](./problems/JS/super.md)
+   <a id="V8"></a>
 
 ### 深入 V8
 

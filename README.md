@@ -50,7 +50,7 @@
 
 ### NodeJS
 
-（持续更新中....）
+1. [关于 NodeJS 模块系统的思考](./problems/NodeJs/module.md)
 
 <a id="React"></a>
 

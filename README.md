@@ -61,7 +61,7 @@
 2. [深入 React17 的事件系统](./problems/React/React-event.md)
 3. [深入 React-Router 原理](./problems/React/React-router.md)
 4. [React 基于可视化建模设计解决复杂应用的开发方式](./problems/React/React-machine.md)
-
+5. [React Fiber更新机制](./problems/React/React-fiber.md)
 <a id="Vue"></a>
 
 ### Vue

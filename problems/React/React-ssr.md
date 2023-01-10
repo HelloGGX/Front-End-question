@@ -115,7 +115,7 @@ app.use('*', (request, response) => {
 ```
 通过将<Suspense>包裹<Comments>组件，告诉React：**Suspense之外的其他组件不需要等待Comments组件的评论数据，而在该组件获取到完整数据之前，用一个Spinner组件占位**。
 
-当Comments组件获取到完整评论数据之后，React会将额外的HTML发送到同一个流中，并附加一个最小的内联<script>标签，将HTML替换到正确的地方, 示例代码如下：
+当Comments组件获取到完整评论数据之后，React会将额外的HTML发送到同一个流中，并附加一个最小的内联`<script>`标签，将HTML替换到正确的地方, 示例代码如下：
 
 ```html
 <div hidden id="comments">

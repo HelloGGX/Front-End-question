@@ -62,6 +62,47 @@ export const CacheComponent = 24;
 3. 更方便地查找下一个 fiber
 4. 可以随时从某个节点还原整课树
 
+在React Fiber中，每个 Fiber 节点的处理称为一个工作单元（unit of work），这些工作单元是由React的调度器管理的。每个工作单元代表一个需要处理的更新或任务，比如组件的渲染或状态更新。React Fiber的调度器会根据不同的优先级来安排这些工作单元的执行顺序。
+
+## 如何给任务分配优先级
+
+React Fiber的优先级分配主要基于以下几个因素：
+
+1. **任务的类型**：用户交互相关的任务通常会被分配较高的优先级，而后台任务则分配较低的优先级。
+2. **任务的紧急程度**：某些任务需要立即响应用户操作，比如输入框的输入事件，这类任务会被分配最高优先级。
+3. **任务的影响范围**：涉及到界面大范围更新的任务可能会被分配较高的优先级，以确保用户看到的界面尽快更新。
+4. **任务的时间需求**：一些任务可以延迟执行而不影响用户体验，这些任务会被分配较低的优先级。
+
+### 分配优先级的机制
+
+React Fiber通过一个调度器来管理和分配任务的优先级。调度器会根据任务的紧急程度、类型和影响范围，使用不同的优先级类别来调度这些任务。以下是具体的分配过程：
+
+1. **任务分类**：当任务进入调度器时，首先会根据任务的类型和上下文进行分类。
+2. **优先级赋值**：每类任务会被赋予对应的优先级。例如，用户输入事件会被赋予立即优先级，而后台数据同步任务会被赋予低优先级。
+3. **任务调度**：调度器根据任务的优先级，将高优先级的任务安排在前面执行。如果当前正在执行低优先级任务，调度器可以中断它以执行更高优先级的任务。
+
+### 示例代码
+
+以下是一个示例代码，展示了如何在React中利用不同优先级来调度任务：
+
+```javascript
+import { unstable_scheduleCallback as scheduleCallback, unstable_LowPriority as LowPriority, unstable_UserBlockingPriority as UserBlockingPriority } from 'scheduler';
+
+// 高优先级任务
+scheduleCallback(UserBlockingPriority, () => {
+  console.log('高优先级任务执行');
+});
+
+// 低优先级任务
+scheduleCallback(LowPriority, () => {
+  console.log('低优先级任务执行');
+});
+```
+
+在这个示例中，`scheduleCallback`函数用于调度任务，并为任务分配不同的优先级。`UserBlockingPriority`表示用户阻塞优先级，而`LowPriority`表示低优先级。调度器会首先执行高优先级任务，然后在浏览器空闲时执行低优先级任务。
+
+通过这样的优先级调度机制，React Fiber能够更高效地管理任务，提升应用的性能和响应速度。
+
 ## react 更新机制
 
 那么从组件的挂载和更新，react 内部是怎样运作的呢？
@@ -82,80 +123,88 @@ ReactDOM.render(<App/>, document.getElementbyId('app'));
 
 在调和的过程中分为两个阶段：render 和 commit
 
-### 1. render 阶段
+### 1. React Fiber 的 Render 阶段
 
-该阶段通过 react 自己实现的 requestIdleCallback 版本调用 workLoop， 而在 workLoop 中会通过 while 循环不断判断浏览器主线程是否有空余时间。
+在 React Fiber 架构中，Render 阶段通过 React 自己实现的 `requestIdleCallback` 版本来调用 `workLoop`，其目的是在浏览器有空闲时间时处理 Fiber 节点。以下是 `workLoop` 函数的基本工作原理：
 
 ```js
 function workLoop(deadline) {
-      let shouldYield = false;
-      while (nextUnitOfWork && !shouldYield) {
-        nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
-        shouldYield = deadline.timeRemaining() < 1;
-      }
-      requestIdleCallback(workLoop);
- }
-```
-
-如果没有空余时间，React 会暂停当前的工作单元，将控制权交还给主线程，并让浏览器渲染此时完成的任何内容， 然后，在下一帧中，React 从它停止的 fiber 节点开始继续构建树。
-
-当它有空余时间时，会遍历它的子节点， 期间会做 3 件事：
-
-1. 构建 Fiber 的子级（每个 Fiber 都有一个 effectTag 表示该 fiber 当前处于创建、更新还是删除）
-2. 返回下一个 Fiber
-3. Fiber 添加对应的 dom 节点，让每个 fiber 映射真实的 dom 节点
-
-而遍历的过程又分为两个过程：向下调和 beginWork() 和向上调和 completeUnitOfWork()
-
-**beginWork：**
-
-1. 对于组件，执行部分生命周期，执行 render ，得到最新的 children 。
-2. 向下遍历调和 children ，复用 oldFiber ( diff 算法)
-3. 打不同的副作用标签 effectTag ，比如类组件的生命周期，或者元素的增加，删除，更新。
-
-**completeUnitOfWork：**
-
-1. 当某个节点不存在子节点，就要从这个节点离开了，改执行 completeUnitOfWork。completeUnitOfWork 有个内层 do while 循环，从当前节点沿着 Fiber 树往上爬。每次循环经过一个节点，都会将 effectTag 的 Fiber 节点向上合并到 effectList，直至根节点。effectList 是个单向链表。在 commit 阶段，将不再需要遍历每一个 fiber ，只需要执行更新 effectList 就可以了。
-
-2. completeWork 阶段对于组件处理 context ；对于元素标签初始化，会创建真实 DOM ，将子孙 DOM 节点插入刚生成的 DOM 节点中；会触发 diffProperties 处理 props ，比如事件收集，style，className 的处理
-
-以上的构建顺序以深度优先遍历的方式构建 WorkInProgress Tree: 如果没有子节点，那么就返回兄弟节点，对兄弟节点进行深度优先遍历，直到没有兄弟节点为止，紧接着开始回溯到 root 节点。 重要的是这些都不是递归的，而是使用了一个 while 循环来完成， 因此我们的调用堆栈不会增长，顶部的堆栈就是当前的 fiber 节点，动图如下：
-
-![](https://files.mdnice.com/user/23305/eeee7485-6c04-489b-b418-f6de17efbf4f.gif)
-
-### 2. commit 阶段
-
-commit 逻辑就会用到我们在构建 Fiber 节点时，在 Fiber 中添加的 dom 节点。深度优先递归地去操作 dom 节点并渲染到页面上，并且 currentRoot 指向当前的 WorkInProgress tree, 后面它将作为 fiber 节点的 alternate 属性， 后面会作为 diff 的依据，该阶段还会做下面的一些事情：
-
-1. 一方面是对一些生命周期和副作用钩子的处理，比如 componentDidMount ，函数组件的 useEffect ，useLayoutEffect；
-2. 另一方面就是在一次更新中，添加节点（ Placement ），更新节点（ Update ），删除节点（ Deletion ），还有就是一些细节的处理，比如 ref 的处理。
-
-需要注意的是：该阶段是同步一次性执行的，不会被中断。
-
-### 3. 调用 setState
-
-当 setState 时，会重新执行 render 函数， 构建一个新的 rootFiber 对象，作为 workInProgress Tree，将当前的 current tree 作为 workInProgress Tree 的 alternate 属性值。
-伪代码如下：
-
-```js
-function render(element, container) {
-    wipRoot = {
-        dom: container,
-        props: {
-            children: [element],
-        },
-        alternate: currentRoot,
-    };
-    nextUnitOfWork = wipRoot;
+  let shouldYield = false;
+  while (nextUnitOfWork && !shouldYield) {
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    shouldYield = deadline.timeRemaining() < 1;
+  }
+  requestIdleCallback(workLoop);
 }
 ```
 
-后面该属性会作为 oldFiber 与新的 workInProgress 进行 diff 比较，该过程会在第一步调和子节点构建新的 Fiber 树的时候进行，比较条件如下：
+### Render 阶段的工作流程
 
-- 如果旧的 fiber 和新的 element 有同样的 type，我们可以保留 DOM 节点，并使用新的属性进行更新
-- 如果 type 不同，且新的 element 存在，意味着我们需要创建一个新的 DOM 节点
-- 如果 type 不同，且旧的 fiber 存在，我们需要删除这个旧的节点
+1. **处理 Fiber 节点**：
+   - 在 `workLoop` 中，通过 `while` 循环判断浏览器主线程是否有空闲时间，每次迭代处理一个 Fiber 节点，每个 Fiber 节点的处理称为一个工作单元（unit of work）。这个工作单元包括计算新的状态、生成新的子节点、准备更新等。
 
-通过 diff 比较，我们会在 fiber 对象上添加 effectTag 属性，表示该 fiber 当前处于创建、更新还是删除状态， 以便在后面的 commit 阶段根据 effectTag 对 dom 进行操作。
+2. **时间片切换**：
+   - 如果没有空余时间，React 会暂停当前的工作单元，将控制权交还给主线程，并让浏览器渲染此时完成的任何内容。在下一帧中，React 会从上次停止的 Fiber 节点继续构建树。
 
-在前面讲过：completeUnitOfWork 有个内层 do while 循环，从当前节点沿着 Fiber 树往上爬。每次循环经过一个节点，都会将 effectTag 的 Fiber 节点向上合并到 effectList，直至根节点。effectList 是个单向链表。在 commit 阶段，将不再需要遍历每一个 fiber ，只需要执行更新 effectList 就可以了。
+3. **遍历 Fiber 树**：
+   - 当有空余时间时，React 会遍历 Fiber 树的子节点。期间主要做以下三件事：
+     1. 构建 Fiber 的子级（每个 Fiber 都有一个 `effectTag` 表示该 Fiber 当前处于创建、更新还是删除状态）。
+     2. 返回下一个 Fiber。
+     3. 将对应的 DOM 节点添加到 Fiber 中，使每个 Fiber 映射到真实的 DOM 节点。
+
+### 向下调和（beginWork）和向上调和（completeUnitOfWork）
+
+- **beginWork**：
+  1. 对于组件，执行部分生命周期方法，执行 `render` 方法，得到最新的子节点。
+  2. 向下遍历调和子节点，复用 `oldFiber`（diff 算法）。
+  3. 标记不同的副作用标签 `effectTag`，例如类组件的生命周期方法，或者元素的增加、删除、更新。
+
+- **completeUnitOfWork**：
+  1. 当某个节点不存在子节点时，执行 `completeUnitOfWork`。`completeUnitOfWork` 内部有一个 `do while` 循环，从当前节点沿着 Fiber 树往上爬。每次循环经过一个节点，都会将 `effectTag` 的 Fiber 节点向上合并到 `effectList`。`effectList` 是一个单向链表，包含了所有需要更新的 DOM 操作。在提交（commit）阶段，React 会一次性应用这些变更，确保 DOM 操作尽可能高效。
+  2. `completeWork` 阶段处理组件的上下文，对于元素标签会初始化并创建真实的 DOM 节点，将子孙 DOM 节点插入刚生成的 DOM 节点中，触发 `diffProperties` 处理属性，例如事件收集、`style`、`className` 等。
+
+### 构建 WorkInProgress Tree
+
+- React 以深度优先遍历的方式构建 WorkInProgress Tree。如果没有子节点，就返回兄弟节点，对兄弟节点进行深度优先遍历，直到没有兄弟节点为止，然后开始回溯到根节点。这个过程使用 `while` 循环而不是递归，因此调用堆栈不会增长，顶部的堆栈就是当前的 Fiber 节点。
+
+通过上述过程，React Fiber 能够高效地调度和执行渲染工作，使得应用在响应速度和性能上都有显著提升。
+
+![](https://files.mdnice.com/user/23305/eeee7485-6c04-489b-b418-f6de17efbf4f.gif)
+
+### 2.commit阶段
+
+提交阶段是 React Fiber 渲染过程的第二个阶段。它在调和阶段完成后执行，主要负责将更新的 DOM 应用到页面上。提交阶段可以分为三个子阶段：
+
+1. **Before Mutation Phase**（突变前阶段）
+2. **Mutation Phase**（突变阶段）
+3. **Layout Phase**（布局阶段）
+
+### 1. 突变前阶段（Before Mutation Phase）
+
+在突变前阶段，React Fiber 会执行一些预处理操作，这些操作不会对 DOM 进行修改。主要包括：
+
+- 触发生命周期方法 `getSnapshotBeforeUpdate`：在组件更新前调用，允许组件捕获 DOM 状态。
+- 执行 `useEffect` 和 `useLayoutEffect` 清理函数：在实际突变发生之前清理副作用。
+
+### 2. 突变阶段（Mutation Phase）
+
+在突变阶段，React Fiber 会将需要的变化实际应用到 DOM 中。主要的操作包括：
+
+- **DOM 更新**：React Fiber 会根据调和阶段生成的 Fiber 树，执行相应的 DOM 更新操作。这包括插入、删除和更新 DOM 元素。
+- **Ref 更新**：在突变阶段，React Fiber 会更新 `ref` 属性，将最新的 DOM 节点或组件实例赋值给 `ref`。
+- **组件的生命周期方法**：调用组件的 `componentDidMount` 和 `componentDidUpdate` 生命周期方法。
+
+### 3. 布局阶段（Layout Phase）
+
+在布局阶段，React Fiber 会处理那些需要在 DOM 更新后立即执行的操作。主要包括：
+
+- **useLayoutEffect**：执行布局副作用。在突变阶段完成后，所有 `useLayoutEffect` 的回调函数会被调用。这些副作用通常用于读取布局信息或者在 DOM 更新后执行同步操作。
+- **生命周期方法**：调用 `componentDidMount` 和 `componentDidUpdate` 生命周期方法。这些方法在 DOM 变化已经应用后执行，可以确保 DOM 处于最新状态。
+
+### 提交阶段的执行顺序
+
+1. **开始提交阶段**：确定 Fiber 树中的哪些节点需要更新。
+2. **Before Mutation Phase**：执行突变前阶段的生命周期方法和副作用清理。
+3. **Mutation Phase**：应用 DOM 更新，处理 `ref` 和生命周期方法。
+4. **Layout Phase**：执行布局副作用和相关的生命周期方法。
+5. **结束提交阶段**：完成所有更新，准备进入下一个渲染循环。
